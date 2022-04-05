@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Oscars Over the Years"
+author: "Zoey Wee & Shreya Rao"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
