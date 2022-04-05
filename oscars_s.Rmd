@@ -4,8 +4,9 @@ library(rvest)
 ```
 
 ## Web Scraping
+
 ```{r}
-extract_table_b <- function(html, n) {
+extract_table_poc <- function(html, n) {
   #extract nth table from html
   nth_table <- html %>%
     html_nodes(css = "table") %>% 
@@ -14,6 +15,7 @@ extract_table_b <- function(html, n) {
   
   colnames(nth_table) <- nth_table[2,]
   nth_table <- nth_table[3:nrow(nth_table),]
+  
   return(nth_table)
 }
 
@@ -28,14 +30,54 @@ extract_table <- function(html, n) {
 }
 ```
 
+
 ```{r}
 #black lead/supporting actors and actresses
 black_actors_html = read_html("https://en.wikipedia.org/wiki/List_of_black_Academy_Award_winners_and_nominees")
 
-black_actor_lead <- extract_table_b(black_actors_html, 2)
-black_actress_lead <- extract_table_b(black_actors_html, 3)
-black_actor_sup <- extract_table_b(black_actors_html, 4)
-black_actress_sup <- extract_table_b(black_actors_html, 5)
+black_actor_lead <- extract_table_poc(black_actors_html, 2)
+black_actress_lead <- extract_table_poc(black_actors_html, 3)
+black_actor_sup <- extract_table_poc(black_actors_html, 4)
+black_actress_sup <- extract_table_poc(black_actors_html, 5)
+```
+
+```{r}
+#latin lead/supporting actors and actress
+latin_actors_html <- read_html("https://en.wikipedia.org/wiki/List_of_Latin_American_Academy_Award_winners_and_nominees")
+
+latin_actor_lead <- extract_table_poc(latin_actors_html, 4) %>% select(Year, Nominee, Film, Result)
+latin_actress_lead <- extract_table_poc(latin_actors_html, 5) %>% select(Year, Nominee, Film, Result)
+latin_actor_sup <- extract_table_poc(latin_actors_html, 6) %>% select(Year, Nominee, Film, Result)
+latin_actress_sup <- extract_table_poc(latin_actors_html, 7) %>% select(Year, Nominee, Film, Result)
+```
+
+```{r}
+#asian lead/supporting actors and actress
+asian_actors_html <- read_html("https://en.wikipedia.org/wiki/List_of_Asian_Academy_Award_winners_and_nominees")
+
+asian_actors_html %>%
+    html_nodes(css = "table") %>% 
+    nth(2) %>% 
+    html_table(fill = TRUE)
+
+asian_actor_lead <- extract_table_poc(asian_actors_html, 2) %>% select(Year, Name, Film, Status)
+asian_actress_lead <- extract_table_poc(asian_actors_html, 3) %>% select(Year, Name, Film, Status)
+asian_actor_sup <- extract_table_poc(asian_actors_html, 4) %>% select(Year, Name, Film, Status)
+asian_actress_sup <- extract_table_poc(asian_actors_html, 5) %>% select(Year, Name, Film, Status)
+
+#egyptian
+egyptian_actor_lead <- data.frame(Year = "2018", Name = "Rami Malek", Film = "Bohemian Rhapsody", Status = "Won")
+```
+
+
+```{r}
+#all supporting actors
+actor_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actor")
+
+actor_sup <- NULL
+for(i in 3:12) {
+  actor_sup <- rbind(actor_sup, extract_table(actor_sup_html, i))
+}
 
 
 #all supporting actresses
@@ -46,17 +88,10 @@ for(i in 3:12) {
   actress_sup <- rbind(actress_sup, extract_table(actress_sup_html, i))
 }
 actress_sup <- actress_sup %>% drop_na()
+```
 
 
-#all supporting actors
-actor_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actor")
-
-actor_sup <- NULL
-for(i in 3:12) {
-  actor_sup <- rbind(actor_sup, extract_table(actor_sup_html, i))
-}
-
-
+```{r}
 #all lead actors
 actor_lead_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actor")
 
@@ -73,10 +108,14 @@ actress_lead <- NULL
 for(i in 3:13) {
   actress_lead <- rbind(actress_lead, extract_table(actress_lead_html, i))
 }
+```
 
-actress_lead_html %>%
-    html_nodes(css = "table") %>%
-  nth(3) %>% 
+
+```{r}
+latin_actors_html %>%
+    html_nodes(css = "table") %>% 
+    nth(6) %>% 
     html_table(fill = TRUE)
 ```
+
 
