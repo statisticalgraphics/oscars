@@ -43,7 +43,7 @@ actress_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_B
 
 actress_sup <- NULL
 for(i in 3:12) {
-  actress_sup <- rbind(actress_sup, extract_table_sup(actress_sup_html, i))
+  actress_sup <- rbind(actress_sup, extract_table(actress_sup_html, i))
 }
 actress_sup <- actress_sup %>% drop_na()
 
@@ -71,12 +71,12 @@ actress_lead_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_
 
 actress_lead <- NULL
 for(i in 3:13) {
-  actor_lead <- rbind(actor_lead, extract_table(actor_lead_html, i))
+  actress_lead <- rbind(actress_lead, extract_table(actress_lead_html, i))
 }
 
-actor_lead_html %>%
+actress_lead_html %>%
     html_nodes(css = "table") %>%
-  nth(13) %>% 
+  nth(3) %>% 
     html_table(fill = TRUE)
 ```
 
