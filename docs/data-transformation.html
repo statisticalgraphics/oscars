@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Data transformation | Oscars Over the Years</title>
   <meta name="description" content="Chapter 3 Data transformation | Oscars Over the Years" />
-  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Data transformation | Oscars Over the Years" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Zoey Wee &amp; Shreya Rao" />
 
 
-<meta name="date" content="2022-04-05" />
+<meta name="date" content="2022-04-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -72,13 +72,15 @@
 <li><a href="./">Oscars</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
-<li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component<span></span></a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#web-scraping"><i class="fa fa-check"></i><b>3.1</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -98,9 +100,36 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="data-transformation" class="section level1 hasAnchor" number="3">
+<div id="data-transformation" class="section level1 hasAnchor">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation<a href="data-transformation.html#data-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="web-scraping" class="section level2 hasAnchor">
+<h2><span class="header-section-number">3.1</span> Web Scraping<a href="data-transformation.html#web-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## # A tibble: 10 x 7
+##    X1                      X2                      X3    X4    X5    X6    X7   
+##    &lt;chr&gt;                   &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 Actor in a Leading Role Actor in a Leading Role &quot;Act~ Acto~ Acto~ Acto~ &quot;Act~
+##  2 Year                    Name                    &quot;Cou~ Film  Role  Stat~ &quot;Mil~
+##  3 1956                    Yul Brynner             &quot;&quot;    The ~ King~ Won   &quot;Bor~
+##  4 1971                    Topol                   &quot;&quot;    Fidd~ Tevye Nomi~ &quot;Fir~
+##  5 1982                    Ben Kingsley            &quot;&quot;    Gand~ Maha~ Won   &quot;Fir~
+##  6 1984                    F. Murray Abraham       &quot;&quot;    Amad~ Anto~ Won   &quot;Fir~
+##  7 2003                    Ben Kingsley            &quot;&quot;    Hous~ Colo~ Nomi~ &quot;&quot;   
+##  8 2011                    Demián Bichir           &quot;/&quot;   A Be~ Carl~ Nomi~ &quot;Leb~
+##  9 2020                    Riz Ahmed               &quot;&quot;    Soun~ Rube~ Nomi~ &quot;Pak~
+## 10 2020                    Steven Yeun             &quot;&quot;    Mina~ Jaco~ Nomi~ &quot;Kor~</code></pre>
+<pre><code>## # A tibble: 8 x 7
+##   X1                    X2                    X3         X4    X5    X6    X7   
+##   &lt;chr&gt;                 &lt;chr&gt;                 &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 Best Supporting Actor Best Supporting Actor &quot;Best Sup~ Best~ Best~ Best~ Best~
+## 2 Year                  Nominee               &quot;Country&quot;  Film  Resu~ Ref.  &lt;NA&gt; 
+## 3 1948                  José Ferrer           &quot;&quot;         Joan~ Nomi~ [25]  &lt;NA&gt; 
+## 4 1952                  Anthony Quinn         &quot;&quot;         Viva~ Won   [17]  &lt;NA&gt; 
+## 5 1956                  Anthony Quinn         &quot;&quot;         Lust~ Won   [26]  &lt;NA&gt; 
+## 6 1990                  Andy García           &quot;&quot;         The ~ Nomi~ [27]  &lt;NA&gt; 
+## 7 2000                  Benicio del Toro      &quot;&quot;         Traf~ Won   [28]  &lt;NA&gt; 
+## 8 2003                  Benicio del Toro      &quot;&quot;         21 G~ Nomi~ [29]  &lt;NA&gt;</code></pre>
 
+</div>
 </div>
             </section>
 
