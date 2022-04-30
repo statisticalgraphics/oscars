@@ -120,3 +120,37 @@ latin_actors_html %>%
     html_table(fill = TRUE)
 ```
 
+
+
+###  Highest Grossing Movies from 1977-2021
+
+```{r}
+link1 <- "https://www.boxofficemojo.com/year/world/"
+link2 <- "/?sort=domesticGrossToDate&ref_=bo_ydw__resort#table"
+
+#highest_grossing <- NULL
+
+# for(i in 1977:2021) {
+#   temp_link <- paste(link1, as.character(i), link2, sep="")
+#   temp_html <- read_html(temp_link)
+#   movie_table <- temp_html %>% html_nodes("table") %>% html_table(fill = T)
+#   movie <- movie_table[[1]][1,]
+#   highest_grossing <- rbind(highest_grossing, movie) 
+# }
+
+highest_grossing <- data.frame(Movie=character(45), Domestic=character(45))
+index <- 1
+
+for(i in 1977:2021) {
+  temp_link <- paste(link1, as.character(i), link2, sep="")
+  temp_html <- read_html(temp_link)
+  highest_grossing$Movie[index] <- temp_html %>% html_nodes("td") %>% html_text %>% nth(2)
+  highest_grossing$Domestic[index] <- temp_html %>% html_nodes("td") %>% html_text %>% nth(4)
+  index <- index + 1
+}
+
+highest_grossing <- highest_grossing %>% mutate(Year = 1977:2021)
+```
+
+
+
