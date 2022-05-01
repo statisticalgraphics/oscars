@@ -19,7 +19,7 @@ https://en.wikipedia.org/wiki/List_of_Asian_Academy_Award_winners_and_nominees
 https://www.imdb.com/list/ls009487211/
 
 
-4. We collected the box office data for the films that won Oscars Best Picture from 1980 to 2021 by web scraping. The variables of this data set are Release Date, Movie, Production Budget, Domestic Opening Weekend, and Domestic Box Office. We also collected the box office data for the highest grossing movie for each year from 1980 to 2021 by web scraping. The variables of this data set are Release Group(=Movie), Worldwide box office Domestic box office, and Foreign box office.
+4. We collected the box office data for the films that won Oscars Best Picture from 1980 to 2021 by web scraping. The variables of this data set are Release Date, Movie, Production Budget, Domestic Opening Weekend, and Domestic Box Office. We also collected the box office data for the highest grossing movie for each year from 1977 to 2021 by web scraping. The variables of this data set are Release Group(=Movie), Worldwide box office Domestic box office, and Foreign box office.
 https://www.the-numbers.com/movies/comparisons/Best-Picture-Oscar-Winners
 https://www.boxofficemojo.com/year/world/2019/?sort=domesticGrossToDate&ref_=bo_ydw__resort#table
 
