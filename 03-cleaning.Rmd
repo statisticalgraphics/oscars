@@ -149,8 +149,23 @@ for(i in 1977:2021) {
   index <- index + 1
 }
 
-highest_grossing <- highest_grossing %>% mutate(Year = 1977:2021)
+highest_grossing <- highest_grossing %>% mutate(Year = 1977:2021) %>% rename(Overall_Movie = Movie, Overall_Boxoffice = Domestic) 
+#coverting boxoffice to numeric
+highest_grossing$Overall_Boxoffice <- as.numeric(gsub("\\$|,", "", highest_grossing$Overall_Boxoffice))
 ```
 
+
+### Box office earnings of Oscar Best Picture
+```{r}
+oscar_bo_html <- read_html("https://www.the-numbers.com/movies/comparisons/Best-Picture-Oscar-Winners")
+
+oscar_bo <- (oscar_bo_html %>% html_nodes("table") %>% html_table(fill = T))[[1]]
+oscar_bo <- oscar_bo %>% select(Movie, "DomesticBox Office", "Release Date") %>% rename(Oscar_Boxoffice = "DomesticBox Office", "Oscar_Movie" = Movie)
+
+#adding release year
+oscar_bo$Year <- as.numeric(substr(oscar_bo$`Release Date`, nchar(oscar_bo$`Release Date`)-3, nchar(oscar_bo$`Release Date`)))
+#coverting boxoffice to numeric
+oscar_bo$Oscar_Boxoffice <- as.numeric(gsub("\\$|,", "", oscar_bo$Oscar_Boxoffice))
+```
 
 
