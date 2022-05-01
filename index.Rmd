@@ -7,3 +7,8 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+A lot of movements regarding diversity are now happening all around the world. It has always been an important topic and it is true that the social effort towards diversity inclusion has been made more and more over time. We are hearing a lot more news than before about people of color being in important positions. Since both of us are passionate moviegoers, we got curious about whether that is the case in the movie industry as well. Our major questions were
+1)	Was there racial bias present when it came to choosing what movies were considered “good”? 
+2)	Are movies that have female lead roles as popular as those that have male lead roles?
+
+In order to gain insights to answer these questions, we first tried to look for a relationship between the “popularity” and “goodness” of movies. We assumed the goodness of a movie is qualified by Oscar nominations and wins, and popularity is determined by box office success. We also explored if there is a relationship between the number of nominations and the result of whether they actually win the award or not. Next, we explored how the proportion of people of color represented by the media has changed over the years by analyzing the Oscars data. Finally, we tried to figure out whether there has been gender disparity in the setting of Oscars and box office as well. We believe that this project can serve as a positive agent catalyzing health discussion about the media industry and our society as well.
