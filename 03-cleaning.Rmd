@@ -72,6 +72,8 @@ egyptian_actor_lead <- data.frame(Year = "2018", Name = "Rami Malek", Film = "Bo
 ```
 
 
+### All supporting actors and actresses
+
 ```{r}
 #all supporting actors
 actor_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actor")
@@ -93,6 +95,8 @@ actress_sup <- actress_sup %>% drop_na()
 ```
 
 
+### All lead actors and actresses
+
 ```{r}
 #all lead actors
 actor_lead_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actor")
@@ -111,15 +115,6 @@ for(i in 3:13) {
   actress_lead <- rbind(actress_lead, extract_table(actress_lead_html, i))
 }
 ```
-
-
-```{r}
-latin_actors_html %>%
-    html_nodes(css = "table") %>% 
-    nth(6) %>% 
-    html_table(fill = TRUE)
-```
-
 
 
 ###  Highest Grossing Movies from 1977-2021
