@@ -169,3 +169,15 @@ oscar_bo$Oscar_Boxoffice <- as.numeric(gsub("\\$|,", "", oscar_bo$Oscar_Boxoffic
 ```
 
 
+### Oscar Winners with female lead
+```{r}
+library(readxl)
+female_winners<- read_xlsx("data/women.xlsx")
+
+```
+
+### Box office of Winners with female lead and the Nominees that year 
+```{r}
+female_nom_bo<-read_xlsx("data/female_nominees_bo.xlsx")
+female_nom_bo
+```
