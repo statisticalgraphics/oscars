@@ -1,8 +1,33 @@
 # Data sources
 
-https://www.refinery29.com/en-us/oscar-best-picture-winners-women-lead#slide-16
-https://screenrant.com/highest-grossing-best-picture-winners-ranked/
-https://www.statista.com/statistics/254688/box-office-revenues-academy-awards-winners-vs-box-office-hits/
-https://www.boxofficemojo.com/year/world/2019/?sort=domesticGrossToDate&ref_=bo_ydw__resort#table
-https://www.the-numbers.com/movies/comparisons/Best-Picture-Oscar-Winners
+1. We collected our data for the list of all Oscars winners and nominees over the years (1927-2021) for best actor, best actress, best supporting actor, and best supporting actress by web scraping from Wikipedia.
+The variables of these data sets are Year, Name of Actor/Actress, Role, and Film.
+https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actor
+https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actress
+https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actor
+https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actress
+
+
+2. We collected our data for the list of black/Latin/Asian Oscars winners and nominees over the years for best actor, best actress, best supporting actor, and best supporting actress by web scraping from Wikipedia.
+The variables of these data sets are Year, Name of Actor/Actress, Role, Film, Status(Won or Nominated), and Milestone.
+https://en.wikipedia.org/wiki/List_of_black_Academy_Award_winners_and_nominees
+https://en.wikipedia.org/wiki/List_of_Latin_American_Academy_Award_winners_and_nominees
+https://en.wikipedia.org/wiki/List_of_Asian_Academy_Award_winners_and_nominees
+
+
+3. We collected the list of Best Picture Oscar nominees and winners by year by web scraping from imdb. The variables are Year, Movie, Running time, Genre, and Rating.
 https://www.imdb.com/list/ls009487211/
+
+
+4. We collected the box office data for the films that won Oscars Best Picture from 1980 to 2021 by web scraping. The variables of this data set are Release Date, Movie, Production Budget, Domestic Opening Weekend, and Domestic Box Office. We also collected the box office data for the highest grossing movie for each year from 1980 to 2021 by web scraping. The variables of this data set are Release Group(=Movie), Worldwide box office Domestic box office, and Foreign box office.
+https://www.the-numbers.com/movies/comparisons/Best-Picture-Oscar-Winners
+https://www.boxofficemojo.com/year/world/2019/?sort=domesticGrossToDate&ref_=bo_ydw__resort#table
+
+
+5. We collected the list of Oscars Best Picture Winners with female leads over the years (which turned out to be only 16 cases), and the box office data for the best picture winners and nominations for those 16 years by web scraping. The variables of the first data set are Year and Movie, and for the latter one were Year, Movie, Box office, and Status(Won or Nominated).
+https://www.refinery29.com/en-us/oscar-best-picture-winners-women-lead#slide-16
+https://www.ultimatemovierankings.com/
+
+
+
+##https://screenrant.com/highest-grossing-best-picture-winners-ranked/
