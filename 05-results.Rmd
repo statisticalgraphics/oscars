@@ -1,1 +1,55 @@
 # Results
+
+```{r}
+library(tidyverse)
+library(stringr)
+library(plotly)
+```
+
+
+## Popular movies vs Oscar Winners 
+
+```{r}
+#manipulating tables
+bo_oscar_highest_data <- left_join(oscar_bo, highest_grossing, by="Year") %>% select(Year, Overall_Movie, Overall_Boxoffice, Oscar_Movie, Oscar_Boxoffice)
+
+rows <- nrow(bo_oscar_highest_data)
+
+bo_oscar_temp <- bo_oscar_highest_data %>% select(Year, Oscar_Boxoffice, Oscar_Movie) %>% rename(Boxoffice = Oscar_Boxoffice, Movie = Oscar_Movie) %>% mutate(Group = rep("Oscar", rows))
+bo_overall_temp <- bo_oscar_highest_data %>% select(Year, Overall_Boxoffice, Overall_Movie) %>% rename(Boxoffice = Overall_Boxoffice, Movie = Overall_Movie) %>% mutate(Group = rep("Overall", rows))
+
+bo_oscar_highest_data <- rbind(bo_oscar_temp, bo_overall_temp)
+```
+
+```{r}
+#plotting
+bo_oscar_highest_data %>% 
+  ggplot(aes(x = Year, y = Boxoffice, col = Group)) + 
+  geom_line(size = 1) +
+  scale_y_continuous(labels = scales::comma) +
+  theme_light() +
+  scale_color_manual(values = c("#FAC983", "#000000")) +
+  theme(legend.title= element_blank())
+
+
+plot_ly() %>%
+  add_lines(x = bo_oscar_temp$Year, y = bo_oscar_temp$Boxoffice, 
+            color = I("#FAC983"), 
+            name = "Oscar Best Picture",
+            text = bo_oscar_temp$Movie,
+            hoverinfo = 'text') %>%
+  add_lines(x = bo_oscar_temp$Year, y = bo_overall_temp$Boxoffice, 
+            color = I("black"), 
+            name = "Highest Grossest Film",
+            text = bo_overall_temp$Movie,
+            hoverinfo = 'text') %>%
+  layout(legend = list(x = 100, y = 0.5), title = 'Best Picture vs Highest Grossing Boxoffice')
+```
+
+
+## Number of nominations for each actor
+
+```{r}
+
+```
+
