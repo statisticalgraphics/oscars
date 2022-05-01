@@ -181,3 +181,29 @@ female_winners<- read_xlsx("data/women.xlsx")
 female_nom_bo<-read_xlsx("data/female_nominees_bo.xlsx")
 female_nom_bo
 ```
+
+
+### IMDB Ratings of Oscar 
+
+```{r}
+imdb_htmls <- c("https://www.imdb.com/list/ls009487211/", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=2", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=3", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=4", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=5")
+
+imdb_oscar <- data.frame(Movie=character(0), Year=numeric(0), Genre=character(0), Time=character(0), Rating=numeric(0), Image=character(0))
+
+for(html in imdb_htmls) {
+  imdb <- read_html(html)
+  #img_src <- imdb %>% html_nodes(".loadlate") %>% html_attr("src")
+  movie <- head(imdb %>% html_nodes(".loadlate") %>% html_attr("alt"), -2)
+  rating <- imdb %>% html_nodes("span.ipl-rating-star__rating") %>% html_text() %>% parse_number()
+  rating <- rating[c(TRUE, rep(FALSE, 22))]
+  year <- imdb %>% html_nodes(".lister-item-header") %>% html_text()
+  year <- as.numeric(substring(str_extract(year, pattern = "\\([0-9]+\\)"), 2, 5))
+  genre <- imdb %>% html_nodes("span.genre") %>% html_text()
+  time <- imdb %>% html_nodes("span.runtime") %>% html_text()
+  img <- imdb %>% html_nodes("img") %>% html_attr('loadlate')
+  img <- img[!is.na(img)]
+  img <- head(unique(img), -1)
+  imdb_oscar <- rbind(imdb_oscar, data.frame(Movie=movie, Year=year, Genre=genre, Time=time, Rating=rating, Image=img))
+}
+```
+
