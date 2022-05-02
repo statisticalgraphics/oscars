@@ -135,8 +135,8 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
           plot.background = bg_rect,
           legend.background = bg_rect,
           panel.background = bg_rect,
-          panel.grid.major = element_line(colour = "black", size = grid_width),
-          panel.grid.minor = element_line(colour = "black", size = grid_width),
+          panel.grid.major = element_line(colour = "#3c3030", size = grid_width),
+          panel.grid.minor = element_line(colour = "#3c3030", size = grid_width),
           legend.key.width = unit(1.5, "line"),
           legend.key = element_blank(),
           axis.title.x = element_text(margin = unit(c(0.5, 0.25, 0.5, 0.25), "line")),
@@ -150,6 +150,7 @@ all_actors %>%
   ggplot(aes(x=fct_rev(fct_infreq(Actors)))) + 
   geom_bar(fill="black") + 
   coord_flip() +
+  ylab("# of Oscar Nominations") +
   theme_oscars(base_size = 10, grid_width = 0.4) +
   theme(
     panel.grid.major.y = element_blank(),
