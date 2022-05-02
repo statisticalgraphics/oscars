@@ -122,7 +122,7 @@ shinyApp(ui = ui, server = server)
 #data cleaning
 all_actors <- data.frame(Actors = c(actor_lead$Actor, actor_sup$Actor))
 all_actors_filter <- as.data.frame(table(all_actors))
-all_actors_filter <- all_actors_temp %>% filter(Freq > 4)
+all_actors_filter <- all_actors_filter %>% filter(Freq > 4)
 all_actors <- all_actors %>% filter(Actors %in% all_actors_filter$all_actors)
 ```
 
@@ -144,7 +144,9 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
           axis.ticks = element_blank(),
           panel.border = element_blank())
 }
+```
 
+```{r}
 #plotting
 all_actors %>% 
   ggplot(aes(x=fct_rev(fct_infreq(Actors)))) + 
@@ -155,12 +157,45 @@ all_actors %>%
   theme(
     panel.grid.major.y = element_blank(),
     panel.grid.minor.y = element_blank(),
-    plot.title = element_text(size = 48, hjust = 4.4),
+    plot.title = element_text(size = 15),
     plot.subtitle = element_text(hjust = 1.38, margin = unit(c(0.25, 0.25, 2, 0.25), "line")),
     axis.text.y = element_text(size = 10, margin = unit(c(0, -1, 0, 0), "line")),
     axis.title.y = element_blank(),
     axis.title.x = element_text(size = 10),
     legend.position = "none"
   )
+  #ggtitle("Number of time Actors were Nominated for an Oscar")
 ```
 
+
+## Total Nominations and Wins of actors
+
+```{r}
+#data cleaning
+all_actress <- data.frame(Actress = c(actress_lead$Actress, actress_sup$Actress))
+all_actress_filter <- as.data.frame(table(all_actress))
+all_actress_filter <- all_actress_filter %>% filter(Freq > 4)
+all_actress <- all_actress %>% filter(Actress %in% all_actress_filter$all_actress)
+```
+
+
+```{r}
+#plotting
+all_actress %>% 
+  ggplot(aes(x=fct_rev(fct_infreq(Actress)))) + 
+  geom_bar(fill="black") + 
+  coord_flip() +
+  ylab("# of Oscar Nominations") +
+  theme_oscars(base_size = 10, grid_width = 0.4) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.title = element_text(size = 15),
+    plot.subtitle = element_text(hjust = 1.38, margin = unit(c(0.25, 0.25, 2, 0.25), "line")),
+    axis.text.y = element_text(size = 10, margin = unit(c(0, -1, 0, 0), "line")),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(size = 10),
+    legend.position = "none"
+  )
+  #ggtitle("Number of time Actors were Nominated for an Oscar")
+```

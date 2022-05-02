@@ -1,1 +1,15 @@
 # Missing values
+
+
+## Missing Values in Actress Lead
+
+```{r}
+actress_lead <- actress_lead %>% drop_na()
+```
+
+
+## Missing Values in Actress Lead
+
+```{r}
+actress_sup <- actress_sup %>% drop_na()
+```

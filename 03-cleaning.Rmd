@@ -114,11 +114,9 @@ actress_sup <- NULL
 for(i in 3:12) {
   actress_sup <- rbind(actress_sup, extract_table(actress_sup_html, i))
 }
-actress_sup <- actress_sup %>% drop_na()
+
 actress_sup <- actress_sup %>% mutate(Year = year_change(actress_sup$Year)) %>% select(Year, Actress, Film)
-
-
-```
+````
 
 
 ### All lead actors and actresses
@@ -149,6 +147,10 @@ for(i in 3:13) {
 
 actress_lead <- actress_lead %>% mutate(Year = year_change(actress_lead$Year)) %>% select(Year, Actress, Film)
 
+#cleaning actress names
+actress_lead$Actress <- str_replace(actress_lead$Actress, pattern = "\\[[^\\]]+\\]", "")
+actress_lead$Actress <- str_replace(actress_lead$Actress, pattern = "\\([^\\)]+\\)", "")
+actress_lead$Actress <- trimws(actress_lead$Actress)
 ```
 
 
