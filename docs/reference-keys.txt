@@ -6,7 +6,11 @@ all-supporting-actors-and-actresses
 all-lead-actors-and-actresses
 highest-grossing-movies-from-1977-2021
 box-office-earnings-of-oscar-best-picture
+<<<<<<< HEAD
 oscar-best-picture-winners-with-female-lead
+=======
+oscar-winners-with-female-lead
+>>>>>>> 88a2d23bd3c0308e1b6184322e8798bda6f4fcda
 box-office-of-winners-with-female-lead-and-the-nominees-that-year
 imdb-ratings-of-oscar
 missing-values
