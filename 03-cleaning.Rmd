@@ -1,5 +1,15 @@
 # Data transformation
 
+
+We wrote functions that extract nth table from html, and read the tables in from Wikipedia for the Oscars winners and nominees over the years (1927-2021) for best actor, best actress, best supporting actor, and best supporting actress, and stored them in data frames actor_lead, actress_lead, actor_sup, actress_sup respectively. We used the same method for the black/Latin/Asian lead/supporting actors and actresses, and stored them in data frames black_actor_lead, black_actor_sup, black_actress_lead, black_actress_sup, and so on with Latin and Asian as well. We found one Egyptian Best Actor winner and put it in a single-row data frame. For the box office data for the highest grossing movies from 1977-2021, ~~. 
+For box office earnings for Oscar Best Picture, we first read in the table, selected "Movie", "Domestic Box Office", "Release Date" columns, renamed them appropriately, modified "Release Date" to make a new column "Year, and cleaned the numbers such as removing dollar signs and commas for the box office earnings. The resulting data set is 41*4 data frame with Oscar_Movie, Oscar_Boxoffice, Release Date, and Year as its columns.
+For the list of Oscar Best Picture winners with female lead, we copied and pasted the corresponding Year and Movie to an excel file with those as the columns and read it in a data frame. 
+
+
+
+
+
+
 ```{r}
 library(tidyverse)
 library(rvest)
@@ -163,8 +173,7 @@ oscar_bo$Year <- as.numeric(substr(oscar_bo$`Release Date`, nchar(oscar_bo$`Rele
 oscar_bo$Oscar_Boxoffice <- as.numeric(gsub("\\$|,", "", oscar_bo$Oscar_Boxoffice))
 ```
 
-
-### Oscar Winners with female lead
+### Oscar Best Picture Winners with female lead
 ```{r}
 library(readxl)
 female_winners<- read_xlsx("data/women.xlsx")
