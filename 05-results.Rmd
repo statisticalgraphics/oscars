@@ -6,6 +6,8 @@ library(stringr)
 library(plotly)
 library(shiny)
 library(shinydashboard)
+library(ggrepel)
+library(knitr)
 ```
 
 
@@ -113,6 +115,8 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
+
+#include_app(t, height = "400px")
 ```
 
 
@@ -128,7 +132,7 @@ all_actors <- all_actors %>% filter(Actors %in% all_actors_filter$all_actors)
 
 ```{r}
 theme_oscars = function(base_size = 12, grid_width = 0.2) {
-  bg_rect = element_rect(fill = "#dfca4e", color = "#dfca4e")
+  bg_rect = element_rect(fill = "#EBAB47", color = "#EBAB47")
 
   theme_bw(base_size) +
     theme(
@@ -152,7 +156,7 @@ all_actors %>%
   ggplot(aes(x=fct_rev(fct_infreq(Actors)))) + 
   geom_bar(fill="black") + 
   coord_flip() +
-  ylab("# of Oscar Nominations") +
+  ylab("Number of Oscar Nominations") +
   theme_oscars(base_size = 10, grid_width = 0.4) +
   theme(
     panel.grid.major.y = element_blank(),
@@ -185,7 +189,7 @@ all_actress %>%
   ggplot(aes(x=fct_rev(fct_infreq(Actress)))) + 
   geom_bar(fill="black") + 
   coord_flip() +
-  ylab("# of Oscar Nominations") +
+  ylab("Number of Oscar Nominations") +
   theme_oscars(base_size = 10, grid_width = 0.4) +
   theme(
     panel.grid.major.y = element_blank(),
@@ -200,4 +204,39 @@ all_actress %>%
   #ggtitle("Number of time Actors were Nominated for an Oscar")
 ```
 
+
+## Female-lead Movie Box Office vs Other Nominees that Year
+
+```{r}
+female_nom_bo %>% mutate(Status = ifelse(Status == "N", "Male-lead Nominee", "Female-lead Winner")) %>%
+  ggplot(aes(x=as.factor(Year), y=Boxoffice, col=as.factor(Status)), label=Movie) +
+  geom_point(size=2) +
+  ylab("Boxoffice Earnings (in Millions)") +
+  theme_light() +
+  #geom_text(aes(label = ifelse(Movie %in% female_winners$Movie, Movie, "")),hjust=0, vjust=0, position = position_dodge()) +
+  scale_color_manual(values = c("#000000", "#EBAB47")) +
+  theme(axis.title.x = element_blank(), legend.title= element_blank(),
+        legend.position = c(0.15, 0.9)) +
+  geom_label_repel(aes(label = ifelse(Movie %in% female_winners$Movie, Movie, "")), size = 3, max.overlaps = Inf)
+```
+
+
+## Average Runtime of Oscar Nominees over Time
+
+```{r}
+imdb_oscar %>% group_by(Year) %>% 
+  summarise(average_rating = mean(Rating)) %>%
+  ggplot(aes(x=Year, y=average_rating)) + geom_line()
+```
+
+## Average Runtime of Oscar Nominees over Time
+
+```{r}
+runtimePattern <- "\\smin"
+imdb_oscar %>% 
+  mutate(Time = as.numeric(str_replace(Time, runtimePattern, ""))) %>% 
+  group_by(Year) %>% 
+  summarise(average_runtime = mean(as.numeric(Time))) %>%
+  ggplot(aes(x=Year, y=average_runtime)) + geom_line()
+```
 
