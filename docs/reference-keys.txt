@@ -2,7 +2,16 @@ introduction
 data-sources
 data-transformation
 web-scraping
+all-supporting-actors-and-actresses
+all-lead-actors-and-actresses
+highest-grossing-movies-from-1977-2021
+box-office-earnings-of-oscar-best-picture
+oscar-winners-with-female-lead
+box-office-of-winners-with-female-lead-and-the-nominees-that-year
+imdb-ratings-of-oscar
 missing-values
 results
+popular-movies-vs-oscar-winners
+imdb-ratings-of-oscar-movies-over-time
 interactive-component
 conclusion

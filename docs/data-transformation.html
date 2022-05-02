@@ -23,7 +23,7 @@
 <meta name="author" content="Zoey Wee &amp; Shreya Rao" />
 
 
-<meta name="date" content="2022-04-30" />
+<meta name="date" content="2022-05-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 
 
 
@@ -75,10 +82,21 @@
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a><ul>
-<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#web-scraping"><i class="fa fa-check"></i><b>3.1</b> Web Scraping</a></li>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#web-scraping"><i class="fa fa-check"></i><b>3.1</b> Web Scraping</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="data-transformation.html"><a href="data-transformation.html#all-supporting-actors-and-actresses"><i class="fa fa-check"></i><b>3.1.1</b> All supporting actors and actresses</a></li>
+<li class="chapter" data-level="3.1.2" data-path="data-transformation.html"><a href="data-transformation.html#all-lead-actors-and-actresses"><i class="fa fa-check"></i><b>3.1.2</b> All lead actors and actresses</a></li>
+<li class="chapter" data-level="3.1.3" data-path="data-transformation.html"><a href="data-transformation.html#highest-grossing-movies-from-1977-2021"><i class="fa fa-check"></i><b>3.1.3</b> Highest Grossing Movies from 1977-2021</a></li>
+<li class="chapter" data-level="3.1.4" data-path="data-transformation.html"><a href="data-transformation.html#box-office-earnings-of-oscar-best-picture"><i class="fa fa-check"></i><b>3.1.4</b> Box office earnings of Oscar Best Picture</a></li>
+<li class="chapter" data-level="3.1.5" data-path="data-transformation.html"><a href="data-transformation.html#oscar-winners-with-female-lead"><i class="fa fa-check"></i><b>3.1.5</b> Oscar Winners with female lead</a></li>
+<li class="chapter" data-level="3.1.6" data-path="data-transformation.html"><a href="data-transformation.html#box-office-of-winners-with-female-lead-and-the-nominees-that-year"><i class="fa fa-check"></i><b>3.1.6</b> Box office of Winners with female lead and the Nominees that year</a></li>
+<li class="chapter" data-level="3.1.7" data-path="data-transformation.html"><a href="data-transformation.html#imdb-ratings-of-oscar"><i class="fa fa-check"></i><b>3.1.7</b> IMDB Ratings of Oscar</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a><ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#popular-movies-vs-oscar-winners"><i class="fa fa-check"></i><b>5.1</b> Popular movies vs Oscar Winners</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#imdb-ratings-of-oscar-movies-over-time"><i class="fa fa-check"></i><b>5.2</b> IMDB Ratings of Oscar Movies over Time</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
@@ -117,18 +135,42 @@
 ##  8 2011                    Demián Bichir           &quot;/&quot;   A Be~ Carl~ Nomi~ &quot;Leb~
 ##  9 2020                    Riz Ahmed               &quot;&quot;    Soun~ Rube~ Nomi~ &quot;Pak~
 ## 10 2020                    Steven Yeun             &quot;&quot;    Mina~ Jaco~ Nomi~ &quot;Kor~</code></pre>
-<pre><code>## # A tibble: 8 x 7
-##   X1                    X2                    X3         X4    X5    X6    X7   
-##   &lt;chr&gt;                 &lt;chr&gt;                 &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 Best Supporting Actor Best Supporting Actor &quot;Best Sup~ Best~ Best~ Best~ Best~
-## 2 Year                  Nominee               &quot;Country&quot;  Film  Resu~ Ref.  &lt;NA&gt; 
-## 3 1948                  José Ferrer           &quot;&quot;         Joan~ Nomi~ [25]  &lt;NA&gt; 
-## 4 1952                  Anthony Quinn         &quot;&quot;         Viva~ Won   [17]  &lt;NA&gt; 
-## 5 1956                  Anthony Quinn         &quot;&quot;         Lust~ Won   [26]  &lt;NA&gt; 
-## 6 1990                  Andy García           &quot;&quot;         The ~ Nomi~ [27]  &lt;NA&gt; 
-## 7 2000                  Benicio del Toro      &quot;&quot;         Traf~ Won   [28]  &lt;NA&gt; 
-## 8 2003                  Benicio del Toro      &quot;&quot;         21 G~ Nomi~ [29]  &lt;NA&gt;</code></pre>
+<div id="all-supporting-actors-and-actresses" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.1</span> All supporting actors and actresses<a href="data-transformation.html#all-supporting-actors-and-actresses" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="all-lead-actors-and-actresses" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.2</span> All lead actors and actresses<a href="data-transformation.html#all-lead-actors-and-actresses" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="highest-grossing-movies-from-1977-2021" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.3</span> Highest Grossing Movies from 1977-2021<a href="data-transformation.html#highest-grossing-movies-from-1977-2021" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="box-office-earnings-of-oscar-best-picture" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.4</span> Box office earnings of Oscar Best Picture<a href="data-transformation.html#box-office-earnings-of-oscar-best-picture" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="oscar-winners-with-female-lead" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.5</span> Oscar Winners with female lead<a href="data-transformation.html#oscar-winners-with-female-lead" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="box-office-of-winners-with-female-lead-and-the-nominees-that-year" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.6</span> Box office of Winners with female lead and the Nominees that year<a href="data-transformation.html#box-office-of-winners-with-female-lead-and-the-nominees-that-year" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>## # A tibble: 104 x 4
+##     Year Movie                          Boxoffice Status
+##    &lt;dbl&gt; &lt;chr&gt;                              &lt;dbl&gt; &lt;chr&gt; 
+##  1  1935 It Happened One Night                5.2 W     
+##  2  1935 Cleopatra                            5.5 N     
+##  3  1935 Les Misérables                       3.4 N     
+##  4  1935 The Gay Divorcee                     3.1 N     
+##  5  1935 The Thin Man                         2.6 N     
+##  6  1935 Imitation of Life                    3   N     
+##  7  1935 The Barretts of Wimpole Street       3.6 N     
+##  8  1935 The House of Rothschild              3   N     
+##  9  1935 One Night of Love                    3.4 N     
+## 10  1935 The White Parade                     2.7 N     
+## # ... with 94 more rows</code></pre>
+</div>
+<div id="imdb-ratings-of-oscar" class="section level3 hasAnchor">
+<h3><span class="header-section-number">3.1.7</span> IMDB Ratings of Oscar<a href="data-transformation.html#imdb-ratings-of-oscar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
+</div>
 </div>
 </div>
             </section>
