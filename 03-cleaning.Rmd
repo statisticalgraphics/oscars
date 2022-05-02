@@ -35,6 +35,13 @@ extract_table <- function(html, n) {
   
   return(nth_table)
 }
+
+
+#extract year from scraped tables
+year_change <- function(year) {
+  t <- as.numeric(str_extract(str_extract(string = year, pattern = "\\([0-9]+[a-z]+\\)"), "[0-9]+")) + 1927
+  return(t)
+}
 ```
 
 
@@ -90,6 +97,8 @@ for(i in 3:12) {
   actor_sup <- rbind(actor_sup, extract_table(actor_sup_html, i))
 }
 
+actor_sup <- actor_sup %>% mutate(Year = year_change(actor_sup$Year)) %>% select(Year, Actor, Film)
+
 
 #all supporting actresses
 actress_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actress")
@@ -99,8 +108,9 @@ for(i in 3:12) {
   actress_sup <- rbind(actress_sup, extract_table(actress_sup_html, i))
 }
 actress_sup <- actress_sup %>% drop_na()
+actress_sup <- actress_sup %>% mutate(Year = year_change(actress_sup$Year)) %>% select(Year, Actress, Film)
 
-head(actor_sup,3)
+
 ```
 
 
@@ -115,6 +125,9 @@ for(i in 3:13) {
   actor_lead <- rbind(actor_lead, extract_table(actor_lead_html, i))
 }
 
+actor_lead <- actor_lead %>% mutate(Year = year_change(actor_lead$Year)) %>% select(Year, Actor, Film)
+
+
 
 #all lead actress
 actress_lead_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actress")
@@ -123,6 +136,8 @@ actress_lead <- NULL
 for(i in 3:13) {
   actress_lead <- rbind(actress_lead, extract_table(actress_lead_html, i))
 }
+
+actress_lead <- actress_lead %>% mutate(Year = year_change(actress_lead$Year)) %>% select(Year, Actress, Film)
 
 ```
 
