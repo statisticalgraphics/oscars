@@ -115,3 +115,51 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+
+## Total Nominations and Wins of actors
+
+```{r}
+#data cleaning
+all_actors <- data.frame(Actors = c(actor_lead$Actor, actor_sup$Actor))
+all_actors_filter <- as.data.frame(table(all_actors))
+all_actors_filter <- all_actors_temp %>% filter(Freq > 4)
+all_actors <- all_actors %>% filter(Actors %in% all_actors_filter$all_actors)
+```
+
+```{r}
+theme_oscars = function(base_size = 12, grid_width = 0.2) {
+  bg_rect = element_rect(fill = "#dfca4e", color = "#dfca4e")
+
+  theme_bw(base_size) +
+    theme(
+          plot.background = bg_rect,
+          legend.background = bg_rect,
+          panel.background = bg_rect,
+          panel.grid.major = element_line(colour = "black", size = grid_width),
+          panel.grid.minor = element_line(colour = "black", size = grid_width),
+          legend.key.width = unit(1.5, "line"),
+          legend.key = element_blank(),
+          axis.title.x = element_text(margin = unit(c(0.5, 0.25, 0.5, 0.25), "line")),
+          axis.title.y = element_text(margin = unit(c(0, 1, 0, 0.1), "line")),
+          axis.ticks = element_blank(),
+          panel.border = element_blank())
+}
+
+#plotting
+all_actors %>% 
+  ggplot(aes(x=fct_rev(fct_infreq(Actors)))) + 
+  geom_bar(fill="black") + 
+  coord_flip() +
+  theme_oscars(base_size = 10, grid_width = 0.4) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.title = element_text(size = 48, hjust = 4.4),
+    plot.subtitle = element_text(hjust = 1.38, margin = unit(c(0.25, 0.25, 2, 0.25), "line")),
+    axis.text.y = element_text(size = 10, margin = unit(c(0, -1, 0, 0), "line")),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(size = 10),
+    legend.position = "none"
+  )
+```
+

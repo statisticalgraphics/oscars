@@ -99,6 +99,13 @@ for(i in 3:12) {
 
 actor_sup <- actor_sup %>% mutate(Year = year_change(actor_sup$Year)) %>% select(Year, Actor, Film)
 
+#cleaning actor name
+actor_sup$Actor <- str_replace(actor_sup$Actor, pattern = "\\[[^\\]]+\\]", "")
+actor_sup$Actor <- str_replace(actor_sup$Actor, pattern = "\\([^\\)]+\\)", "")
+actor_sup$Actor <- str_replace(actor_sup$Actor, pattern = "§", "")
+actor_sup$Actor <- str_replace(actor_sup$Actor, pattern = "†", "")
+actor_sup$Actor <- trimws(actor_sup$Actor)
+
 
 #all supporting actresses
 actress_sup_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actress")
@@ -126,8 +133,11 @@ for(i in 3:13) {
 }
 
 actor_lead <- actor_lead %>% mutate(Year = year_change(actor_lead$Year)) %>% select(Year, Actor, Film)
-
-
+actor_lead$Actor <- str_replace(actor_lead$Actor, pattern = "\\[[^\\]]+\\]", "")
+actor_lead$Actor <- str_replace(actor_lead$Actor, pattern = "\\([^\\)]+\\)", "")
+actor_lead$Actor <- str_replace(actor_lead$Actor, pattern = "§", "")
+actor_lead$Actor <- str_replace(actor_lead$Actor, pattern = "†", "")
+actor_lead$Actor <- trimws(actor_lead$Actor)
 
 #all lead actress
 actress_lead_html <- read_html("https://en.wikipedia.org/wiki/Academy_Award_for_Best_Actress")
