@@ -8,6 +8,7 @@ We wrote functions that extract nth table from html, and read the tables in from
 ```{r}
 library(tidyverse)
 library(rvest)
+library(readxl)
 ```
 
 ## Web Scraping
@@ -116,7 +117,7 @@ for(i in 3:12) {
 }
 
 actress_sup <- actress_sup %>% mutate(Year = year_change(actress_sup$Year)) %>% select(Year, Actress, Film)
-````
+```
 
 
 ### All lead actors and actresses
@@ -210,7 +211,6 @@ library(readxl)
 female_winners<- read_xlsx("data/women.xlsx")
 
 head(female_winners,3)
-
 ```
 
 ### Box office of Winners with female lead and the Nominees that year 
