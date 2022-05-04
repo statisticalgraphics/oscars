@@ -1,2 +1,8 @@
 # Conclusion
 
+Through this project, we were able to gain the insights to answer our initial questions:
+1)	Was there racial bias present when it came to choosing what movies were considered “good”? 
+2)	Are movies that have female lead roles as popular as those that have male lead roles?
+Additionally, 
+
+We created a custom theme for the graphs, and only used color scheme that is accessible to people with color deficiency. 

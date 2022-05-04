@@ -1,5 +1,8 @@
 # Results
 
+As a result of our project, we were able to find out that the number of people of color nominated for Oscars Best Actor and Best Supporting Actor has significantly increased over the years. The rate of the increase has accelerated towards recent years, and the diversity has also improved. We also found out that the movies with female lead roles take up only 17% of all-time Oscars Best Picture winners, and they are not necessarily as popular as the nominees with male lead roles. It is true that there were 8 cases during the first 50 years (1927 - around 1980) and 8 more during 25 years afterwards (1981-2005), but there were no such case after 2005 until now. 
+
+
 ```{r}
 library(tidyverse)
 library(stringr)
@@ -51,6 +54,7 @@ plot_ly() %>%
   layout(legend = list(x = 100, y = 0.5), title = 'Best Picture vs Highest Grossing Boxoffice')
 ```
 
+The box office earnings of Oscar Best Picture have always been lower than the highest grossing movies. Whereas the box office of highest grossing movie has been increasing over the years, that for Oscar Best Picture stayed about the same over the years. In fact, the graph shows that the difference in the earnings has been increasing significantly, indicating that Oscars Best Picture does not necessarily reflects the popularity of the movie.
 
 ## IMDB Ratings of Oscar Movies over Time
 
@@ -139,6 +143,9 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
           panel.border = element_blank())
 }
 ```
+
+Try hovering over your mouse on the points. You will see the poster of the movie.
+The ratings of Oscar movies range mostly from 6.5 to 8.5, and there are just a few movies with ratings over 9 and below 6.5. We can see less movies with ratings under 7 for recent years compared to years before 1980.
 
 
 ## Total Nominations and Wins of actors
@@ -272,6 +279,7 @@ female_nom_bo %>% mutate(Status = ifelse(Status == "N", "Male-lead Nominee", "Fe
   ggtitle("Comparing the Boxoffice earnings of female-lead Oscar Best Picture winners\n with the other nominees of that year")
 ```
 
+In the history of Oscars from 1927 to 2021, there were only 16 years where movies with female lead role won the Best Picture. We compared the box office earnings of the wins and other nominees which are movies with male leads that year. The range of the earnings has been increasing over the years, and there were just a few years where the female-lead winners had the highest earnings among the nominated movies. The graph shows that Oscars winners with female leads are not necessarily more popular than the nominees.
 
 ## Average Rating of Oscar Nominees over Time
 
@@ -283,6 +291,9 @@ imdb_oscar %>% group_by(Year) %>%
   ylab("Average Rating (out of 10)") +
   theme_oscars(base_size = 10, grid_width = 0.4)
 ```
+
+Over the years, there has been a slight increasing trend in the average rating of Oscar nominees. The ratings range mostly from 7.25 to 8, and there seems to be less variance for more recent years.
+
 
 ## Average Runtime of Oscar Nominees over Time
 
@@ -298,6 +309,7 @@ imdb_oscar %>%
   theme_oscars(base_size = 10, grid_width = 0.4)
 ```
 
+Over the years, there has been a slight increasing trend in the average runtime of Oscar nominees. The average runtime of Oscar nominees range mostly from 110 to 150 minutes. There was a period from mid 1950s to mid 1960s where the runtime of Oscar movies were the highest, almost near 180 minutes.
 
 ## Average Runtime vs Rating of Oscar Best Picture Nominees
 

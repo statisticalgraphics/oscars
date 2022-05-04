@@ -1,14 +1,46 @@
 # Missing values
 
 
-## Missing Values in Actress Lead
+In the process of web scraping the tables of winners and nominees of Oscars Best Actor/Actress and Best Supporting Actor/Actress over the years(overall and people of color), we found several missing values in the actress_lead and actress_sup data sets. We believe it happened while scraping multiple tables that were separated by year. The missing values were taken care of using drop_na(). For the box office data of the highest grossing film and Best Picture nominations each year, we had no missing values. Since we collected the variables that we want to use for the Best Picture winners with female lead and the rows with the corresponding years of the box office data for the nominations, there were no missing values for those data sets. The imdb data was not in the form of table, but we were also able to collect every data for the variables we wanted to use.
+
+```{r}
+df_list=list(
+  black_actor_lead,
+  black_actress_lead,
+  latin_actor_lead,
+  latin_actress_lead,
+  asian_actor_lead,
+  asian_actress_lead,
+  egyptian_actor_lead,
+  actor_sup,
+  actress_sup,
+  actor_lead, 
+  actress_lead,
+  highest_grossing,
+  oscar_bo,
+  female_winners,
+  female_nom_bo,
+  imdb_oscar)
+
+for (df in df_list)
+{
+  print(sum(is.na(df)))
+}
+```
+
+## Missing Values in Actress Lead and Actress Supporting
+
+```{r}
+tail(actress_lead,10)
+tail(actress_sup,10)
+
+```
+
 
 ```{r}
 actress_lead <- actress_lead %>% drop_na()
 ```
 
-
-## Missing Values in Actress Lead
 
 ```{r}
 actress_sup <- actress_sup %>% drop_na()
