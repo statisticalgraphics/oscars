@@ -144,7 +144,8 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
 }
 ```
 
-Try hovering over your mouse on the points. You will see the poster of the movie.
+https://shrtan.shinyapps.io/C_Graphics/
+Click the link above. Try hovering over your mouse on the points. You will see the poster of the movie.
 The ratings of Oscar movies range mostly from 6.5 to 8.5, and there are just a few movies with ratings over 9 and below 6.5. We can see less movies with ratings under 7 for recent years compared to years before 1980.
 
 
@@ -199,7 +200,7 @@ all_actors_new %>%
   ) + scale_fill_manual(values = c("#33a02c", "#000000")) +
   scale_y_continuous(breaks=c(0,2, 4, 6,8, 10, 12))
 ```
-
+This is a barchart of actors who have been nominated for Best Actor and/or Best Supporting Actor more than four times, and the number of actual wins were colored differently. We can verify that most of them won the award at least once, and there seems to be a positive correlation between the number of nominations and the number of wins. The highest number of times an actor has won the award is 3, which was Jack Nicholson, and he also had the highest number of nominations. We have heard of almost everyone on this list, indicating the reputation of Oscars.
 
 
 
@@ -239,28 +240,8 @@ all_actress_new %>%
     legend.position = "none"
   ) + scale_fill_manual(values = c("#33a02c", "#000000"))
 ```
+This is a barchart of actresses who have been nominated for Best Actress and/or Best Supporting Actress more than four times, and the number of actual wins were colored differently. There are more actresses than actors of such case. Just lie the previous graph, we can see that most of them won the award at least once, and there seems to be a positive correlation between the number of nominations and the number of wins. The highest number of times an actor has won the award is 4, which was Katherine Hepburn, and she does not have the highest number of nominations. The one with the highest number of nominations is Meryl Streep, and she has onw the award 3 times.
 
-
-```{r}
-#plotting
-all_actress %>% 
-  ggplot(aes(x=fct_rev(fct_infreq(Actress)))) + 
-  geom_bar(fill="black") + 
-  coord_flip() +
-  ylab("Number of Oscar Nominations") +
-  theme_oscars(base_size = 10, grid_width = 0.4) +
-  theme(
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor.y = element_blank(),
-    plot.title = element_text(size = 15),
-    plot.subtitle = element_text(hjust = 1.38, margin = unit(c(0.25, 0.25, 2, 0.25), "line")),
-    axis.text.y = element_text(size = 10, margin = unit(c(0, -1, 0, 0), "line")),
-    axis.title.y = element_blank(),
-    axis.title.x = element_text(size = 10),
-    legend.position = "none"
-  )
-  #ggtitle("Number of time Actors were Nominated for an Oscar")
-```
 
 
 ## Female-lead Movie Box Office vs Other Nominees that Year
@@ -322,9 +303,12 @@ imdb_oscar %>%
   xlab("Runtime (mins)") + ylab("Rating (out of 10)") +
   theme_oscars(base_size = 10, grid_width = 0.4)
 ```
-
+We can see that a large proportion of the Oscar movies have runtime of 100 to 150 minutes and ratings of 7 to 8.5. There are just a few movies with ratings over 9 and below 6.5, or runtime over 150 minutes. There is not necessarily a correlation between runtime and ratings.
 
 ## Best Lead Actors Race over Time
+
+
+The following is one graph showing the race of nominees(winners included) of Best Lead Actor over the years. We divided it into five graphs to accommodate all 100 years in the x-axis. We were able to find out that the number of people of color nominated for Oscars Best Actor and Best Supporting Actor has significantly increased over the years. The rate of the increase has accelerated towards recent years, and the diversity has also improved. 
 
 ```{r}
 black_actor_lead <- black_actor_lead %>% mutate(Year = as.numeric(Year))
