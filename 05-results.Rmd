@@ -56,9 +56,9 @@ plot_ly() %>%
 
 The box office earnings of Oscar Best Picture have always been lower than the highest grossing movies. Whereas the box office of highest grossing movie has been increasing over the years, that for Oscar Best Picture stayed about the same over the years. In fact, the graph shows that the difference in the earnings has been increasing significantly, indicating that Oscars Best Picture does not necessarily reflects the popularity of the movie.
 
-## IMDB Ratings of Oscar Movies over Time
 
-```{r}
+
+```{r message=FALSE, warning=FALSE}
 # Dashboard ----------------------------------------------------------------
 ui <- dashboardPage(
   dashboardHeader(title = "Test"),
@@ -143,10 +143,6 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
           panel.border = element_blank())
 }
 ```
-
-https://shrtan.shinyapps.io/C_Graphics/
-Click the link above. Try hovering over your mouse on the points. You will see the poster of the movie.
-The ratings of Oscar movies range mostly from 6.5 to 8.5, and there are just a few movies with ratings over 9 and below 6.5. We can see less movies with ratings under 7 for recent years compared to years before 1980.
 
 
 ## Total Nominations and Wins of actors

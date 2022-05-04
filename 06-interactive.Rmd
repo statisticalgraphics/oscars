@@ -1,3 +1,9 @@
 # Interactive component
 
+## IMDB Ratings of Oscar Movies over Time
+
+https://shrtan.shinyapps.io/C_Graphics/
+Click this link and try hovering over your mouse on the points. You will see the poster of the movie.
+The ratings of Oscar movies range mostly from 6.5 to 8.5, and there are just a few movies with ratings over 9 and below 6.5. We can see less movies with ratings under 7 for recent years compared to years before 1980.
+
 
