@@ -8,6 +8,7 @@ library(shiny)
 library(shinydashboard)
 library(ggrepel)
 library(knitr)
+library(gridExtra)
 ```
 
 
@@ -27,13 +28,13 @@ bo_oscar_highest_data <- rbind(bo_oscar_temp, bo_overall_temp)
 
 ```{r}
 #plotting
-bo_oscar_highest_data %>% 
-  ggplot(aes(x = Year, y = Boxoffice, col = Group)) + 
-  geom_line(size = 1) +
-  scale_y_continuous(labels = scales::comma) +
-  theme_light() +
-  scale_color_manual(values = c("#FAC983", "#000000")) +
-  theme(legend.title= element_blank())
+# bo_oscar_highest_data %>% 
+#   ggplot(aes(x = Year, y = Boxoffice, col = Group)) + 
+#   geom_line(size = 1) +
+#   scale_y_continuous(labels = scales::comma) +
+#   theme_light() +
+#   scale_color_manual(values = c("#FAC983", "#000000")) +
+#   theme(legend.title= element_blank())
 
 
 plot_ly() %>%
@@ -119,17 +120,6 @@ shinyApp(ui = ui, server = server)
 #include_app(t, height = "400px")
 ```
 
-
-## Total Nominations and Wins of actors
-
-```{r}
-#data cleaning
-all_actors <- data.frame(Actors = c(actor_lead$Actor, actor_sup$Actor))
-all_actors_filter <- as.data.frame(table(all_actors))
-all_actors_filter <- all_actors_filter %>% filter(Freq > 4)
-all_actors <- all_actors %>% filter(Actors %in% all_actors_filter$all_actors)
-```
-
 ```{r}
 theme_oscars = function(base_size = 12, grid_width = 0.2) {
   bg_rect = element_rect(fill = "#EBAB47", color = "#EBAB47")
@@ -150,11 +140,43 @@ theme_oscars = function(base_size = 12, grid_width = 0.2) {
 }
 ```
 
+
+## Total Nominations and Wins of actors
+
 ```{r}
-#plotting
-all_actors %>% 
-  ggplot(aes(x=fct_rev(fct_infreq(Actors)))) + 
-  geom_bar(fill="black") + 
+#data cleaning
+all_actors <- data.frame(Actors = c(actor_lead$Actor, actor_sup$Actor))
+all_actors_filter <- as.data.frame(table(all_actors))
+all_actors_filter <- all_actors_filter %>% filter(Freq > 4) %>% arrange(all_actors)
+actor_wins <- actor_wins %>% arrange(Name)
+all_actors_filter <- all_actors_filter %>% mutate(Noms = all_actors_filter$Freq - actor_wins$Wins)
+
+barplot_data <- function(actor, times, status) {
+  
+  new_df <- data.frame(Actor=character(0), Status=character(0))
+  
+  n <- length(actor)
+  for(i in 1:n) {
+  actor_rep <- rep(actor[i], times[i])
+  status_rep <- rep(status, times[i])
+  new_df <- rbind(new_df, data.frame(Actor = actor_rep, Status = status_rep))
+  }
+  return(new_df)
+}
+
+actor_wins_plot <- barplot_data(actor_wins$Name, actor_wins$Wins, "W")
+actor_noms_plot <- barplot_data(all_actors_filter$all_actors, all_actors_filter$Noms, "N")
+all_actors_new <- rbind(actor_wins_plot, actor_noms_plot)
+all_actors_new <- all_actors_new %>% mutate(Status = as.factor(Status))
+
+all_actors <- all_actors %>% filter(Actors %in% all_actors_filter$all_actors)
+```
+
+```{r}
+#new plotting
+all_actors_new %>% 
+  ggplot(aes(x=fct_rev(fct_infreq(Actor)))) + 
+  geom_bar(aes(fill=forcats::fct_rev(Status))) + 
   coord_flip() +
   ylab("Number of Oscar Nominations") +
   theme_oscars(base_size = 10, grid_width = 0.4) +
@@ -167,19 +189,48 @@ all_actors %>%
     axis.title.y = element_blank(),
     axis.title.x = element_text(size = 10),
     legend.position = "none"
-  )
-  #ggtitle("Number of time Actors were Nominated for an Oscar")
+  ) + scale_fill_manual(values = c("#33a02c", "#000000")) +
+  scale_y_continuous(breaks=c(0,2, 4, 6,8, 10, 12))
 ```
 
 
-## Total Nominations and Wins of actors
+
+
+## Total Nominations and Wins of actresses
 
 ```{r}
 #data cleaning
 all_actress <- data.frame(Actress = c(actress_lead$Actress, actress_sup$Actress))
 all_actress_filter <- as.data.frame(table(all_actress))
-all_actress_filter <- all_actress_filter %>% filter(Freq > 4)
-all_actress <- all_actress %>% filter(Actress %in% all_actress_filter$all_actress)
+
+all_actress_filter <- all_actress_filter %>% filter(Freq > 4) %>% arrange(all_actress)
+actress_wins <- actress_wins %>% arrange(Name)
+all_actress_filter <- all_actress_filter %>% mutate(Noms = all_actress_filter$Freq - actress_wins$Wins)
+
+actress_wins_plot <- barplot_data(actress_wins$Name, actress_wins$Wins, "W")
+actress_noms_plot <- barplot_data(all_actress_filter$all_actress, all_actress_filter$Noms, "N")
+all_actress_new <- rbind(actress_wins_plot, actress_noms_plot)
+all_actress_new <- all_actress_new %>% mutate(Status = as.factor(Status))
+```
+
+```{r}
+#new plotting
+all_actress_new %>% 
+  ggplot(aes(x=fct_rev(fct_infreq(Actor)))) + 
+  geom_bar(aes(fill=forcats::fct_rev(Status))) + 
+  coord_flip() +
+  ylab("Number of Oscar Nominations") +
+  theme_oscars(base_size = 10, grid_width = 0.4) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.title = element_text(size = 15),
+    plot.subtitle = element_text(hjust = 1.38, margin = unit(c(0.25, 0.25, 2, 0.25), "line")),
+    axis.text.y = element_text(size = 10, margin = unit(c(0, -1, 0, 0), "line")),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(size = 10),
+    legend.position = "none"
+  ) + scale_fill_manual(values = c("#33a02c", "#000000"))
 ```
 
 
@@ -217,16 +268,20 @@ female_nom_bo %>% mutate(Status = ifelse(Status == "N", "Male-lead Nominee", "Fe
   scale_color_manual(values = c("#000000", "#EBAB47")) +
   theme(axis.title.x = element_blank(), legend.title= element_blank(),
         legend.position = c(0.15, 0.9)) +
-  geom_label_repel(aes(label = ifelse(Movie %in% female_winners$Movie, Movie, "")), size = 3, max.overlaps = Inf)
+  geom_label_repel(aes(label = ifelse(Movie %in% female_winners$Movie, Movie, "")), size = 3, max.overlaps = Inf) +
+  ggtitle("Comparing the Boxoffice earnings of female-lead Oscar Best Picture winners\n with the other nominees of that year")
 ```
 
 
-## Average Runtime of Oscar Nominees over Time
+## Average Rating of Oscar Nominees over Time
 
 ```{r}
 imdb_oscar %>% group_by(Year) %>% 
   summarise(average_rating = mean(Rating)) %>%
-  ggplot(aes(x=Year, y=average_rating)) + geom_line()
+  ggplot(aes(x=Year, y=average_rating)) + geom_line() + geom_point(col = "#ea2c0b") +
+  ggtitle("Average audience rating of Oscar Best Picture nominees over the years") +
+  ylab("Average Rating (out of 10)") +
+  theme_oscars(base_size = 10, grid_width = 0.4)
 ```
 
 ## Average Runtime of Oscar Nominees over Time
@@ -237,6 +292,123 @@ imdb_oscar %>%
   mutate(Time = as.numeric(str_replace(Time, runtimePattern, ""))) %>% 
   group_by(Year) %>% 
   summarise(average_runtime = mean(as.numeric(Time))) %>%
-  ggplot(aes(x=Year, y=average_runtime)) + geom_line()
+  ggplot(aes(x=Year, y=average_runtime)) + geom_line() + geom_point(col = "#ea2c0b") +
+  ggtitle("Average runtime of Oscar Best Picture nominees over the years") +
+  ylab("Average Runtime (mins)") +
+  theme_oscars(base_size = 10, grid_width = 0.4)
 ```
+
+
+## Average Runtime vs Rating of Oscar Best Picture Nominees
+
+```{r}
+runtimePattern <- "\\smin"
+imdb_oscar %>% 
+  mutate(Time = as.numeric(str_replace(Time, runtimePattern, ""))) %>%
+  ggplot(aes(x=Time, y=Rating)) + geom_point(col = "#ea2c0b") +
+  ggtitle("Audience Rating vs Runtime of Oscar Nominated Pictures") +
+  xlab("Runtime (mins)") + ylab("Rating (out of 10)") +
+  theme_oscars(base_size = 10, grid_width = 0.4)
+```
+
+
+## Best Lead Actors Race over Time
+
+```{r}
+black_actor_lead <- black_actor_lead %>% mutate(Year = as.numeric(Year))
+latin_actor_lead <- latin_actor_lead %>% mutate(Year = as.numeric(Year))
+asian_actor_lead <- asian_actor_lead %>% mutate(Year = as.numeric(Year))
+egyptian_actor_lead <- egyptian_actor_lead %>% mutate(Year = as.numeric(Year))
+```
+
+```{r}
+#adding Race variable
+actor_lead$Race <- ifelse(actor_lead$Actor %in% black_actor_lead$Name, "Black", 
+       ifelse(actor_lead$Actor %in% latin_actor_lead$Nominee, "Latin", 
+              ifelse(actor_lead$Actor %in% asian_actor_lead$Name, "Asian",
+                     ifelse(actor_lead$Actor %in% egyptian_actor_lead$Name, "Egyptian", "White"))))
+
+#adding an id var to plot
+actor_lead <- actor_lead %>% group_by(Year) %>% mutate(id = 1:n())
+
+#adding decade groups
+actor_lead$TimePeriod <- ifelse(actor_lead$Year <= 1950, "1928-1950",
+              ifelse(actor_lead$Year <= 1970, "1951-1970",
+                     ifelse(actor_lead$Year <= 1990, "1971-1990",
+                            ifelse(actor_lead$Year <= 2010, "1991-2010", "2011-2021"))))
+```
+
+
+```{r}
+t1 <- actor_lead %>% filter(TimePeriod == "1928-1950") %>% 
+  ggplot(aes(x = as.factor(Year), y = id, col = Race)) +
+  geom_point(size = 5) +
+  theme_light() +
+  scale_color_manual(values = c("#E69F00", "#000000")) + theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),  axis.ticks.y=element_blank(), axis.text.y=element_blank(), axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
+  coord_fixed(ratio=1.5) +
+  geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, max.overlaps = Inf) +
+  ggtitle("Actors: 1928-1950")
+
+t1
+```
+
+```{r}
+t2 <- actor_lead %>% filter(TimePeriod == "1951-1970") %>% 
+  ggplot(aes(x = as.factor(Year), y = id, col = Race, label=Actor)) +
+  geom_point(size = 5) +
+  theme_light() +
+  scale_color_manual(values = c("#56B4E9", "#CC79A7", "#E69F00", "#000000")) + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.ticks.y=element_blank(), axis.text.y=element_blank(),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
+  geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, max.overlaps = Inf) +
+  ggtitle("Actors: 1951-1970")
+
+t2
+```
+
+```{r}
+t3 <- actor_lead %>% filter(TimePeriod == "1971-1990") %>% 
+  ggplot(aes(x = as.factor(Year), y = id, col = Race, label=Actor)) +
+  geom_point(size = 5) +
+  theme_light() +
+  scale_color_manual(values = c("#56B4E9", "#CC79A7", "#E69F00", "#000000")) + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.ticks.y=element_blank(), axis.text.y=element_blank(),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
+  geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, max.overlaps = Inf) +
+  ggtitle("Actors: 1971-1990")
+
+t3
+```
+
+
+```{r}
+t4 <- actor_lead %>% filter(TimePeriod == "1991-2010") %>% 
+  ggplot(aes(x = as.factor(Year), y = id, col = Race, label=Actor)) +
+  geom_point(size = 5) +
+  theme_light() +
+  scale_color_manual(values = c("#56B4E9", "#CC79A7", "#000000")) + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.ticks.y=element_blank(), axis.text.y=element_blank(),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
+  geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, max.overlaps = Inf) +
+  ggtitle("Actors: 1991-2010")
+
+t4
+```
+
+
+```{r}
+t5 <- actor_lead %>% filter(TimePeriod == "2011-2021") %>% 
+  ggplot(aes(x = as.factor(Year), y = id, col = Race, label=Actor)) +
+  geom_point(size = 5) +
+  theme_light() +
+  scale_color_manual(values = c("#56B4E9", "#CC79A7", "#33a02c", "#E69F00", "black")) + 
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.ticks.y=element_blank(), axis.text.y=element_blank(),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
+  geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, position = "dodge") +
+  ggtitle("Actors: 2011-2021")
+
+t5
+```
+
+
 

@@ -247,3 +247,16 @@ for(html in imdb_htmls) {
 head(imdb_oscar,3)
 ```
 
+
+## Number of Times Actors won an Oscar
+
+```{r}
+actor_wins <- read_xlsx("data/actors_num_wins.xlsx", col_names = c("Name", "Wins"))
+```
+
+
+## Number of Times Actresses won an Oscar
+
+```{r}
+actress_wins <- read_xlsx("data/actresses_num_wins.xlsx", col_names = c("Name", "Wins"))
+```
