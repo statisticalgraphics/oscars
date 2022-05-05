@@ -7,8 +7,6 @@ As a result of our project, we were able to find out that the number of people o
 library(tidyverse)
 library(stringr)
 library(plotly)
-library(shiny)
-library(shinydashboard)
 library(ggrepel)
 library(knitr)
 library(gridExtra)
@@ -54,75 +52,8 @@ plot_ly() %>%
   layout(legend = list(x = 100, y = 0.5), title = 'Best Picture vs Highest Grossing Boxoffice')
 ```
 
-The box office earnings of Oscar Best Picture have always been lower than the highest grossing movies. Whereas the box office of highest grossing movie has been increasing over the years, that for Oscar Best Picture stayed about the same over the years. In fact, the graph shows that the difference in the earnings has been increasing significantly, indicating that Oscars Best Picture does not necessarily reflects the popularity of the movie.
+The box office earnings of Oscar Best Picture have always been lower than the highest grossing movies. Whereas the box office of highest grossing movie has been increasing over the years, that for Oscar Best Picture stayed about the same over the years. In fact, the graph shows that the difference in the earnings has been increasing significantly, indicating that being critically acclaimed by bagging the Oscars Best Picture does not necessarily reflects the popularity of the movie.
 
-
-
-```{r message=FALSE, warning=FALSE}
-# Dashboard ----------------------------------------------------------------
-ui <- dashboardPage(
-  dashboardHeader(title = "Test"),
-  dashboardSidebar(),
-  dashboardBody(tags$head(tags$style(
-    HTML("img.small-img {
-          max-width: 75px;
-          }")
-  )),
-  plotlyOutput("hoverplot"))
-)
-
-server <- function(input, output, session) {
-  output$hoverplot <- renderPlotly({
-    plot_ly(
-      imdb_oscar,
-      x         = ~ Year,
-      y         = ~ Rating,
-      type      = 'scatter',
-      mode      = 'markers',
-      hoverinfo = 'none',
-      source = "hoverplotsource",
-      customdata = ~ Image
-    ) %>%
-      event_register('plotly_hover') %>%
-      event_register('plotly_unhover')
-  })
-
-  hover_event <- reactive({
-    event_data(event = "plotly_hover", source = "hoverplotsource")
-  })
-
-  unhover_event <- reactive({
-    event_data(event = "plotly_unhover", source = "hoverplotsource")
-  })
-
-  hoverplotlyProxy <- plotlyProxy("hoverplot", session)
-
-  observeEvent(unhover_event(), {
-    hoverplotlyProxy %>%
-      plotlyProxyInvoke("relayout", list(images = list(NULL)))
-  })
-
-  observeEvent(hover_event(), {
-    hoverplotlyProxy %>%
-      plotlyProxyInvoke("relayout", list(images = list(
-        list(
-          source = hover_event()$customdata,
-          xref = "x",
-          yref = "y",
-          x = hover_event()$x,
-          y = hover_event()$y,
-          sizex = 20,
-          sizey = 20,
-          opacity = 1
-        )
-      )))
-  })
-}
-
-shinyApp(ui = ui, server = server)
-
-#include_app(t, height = "400px")
-```
 
 ```{r}
 theme_oscars = function(base_size = 12, grid_width = 0.2) {
@@ -196,6 +127,7 @@ all_actors_new %>%
   ) + scale_fill_manual(values = c("#33a02c", "#000000")) +
   scale_y_continuous(breaks=c(0,2, 4, 6,8, 10, 12))
 ```
+
 This is a barchart of actors who have been nominated for Best Actor and/or Best Supporting Actor more than four times, and the number of actual wins were colored differently. We can verify that most of them won the award at least once, and there seems to be a positive correlation between the number of nominations and the number of wins. The highest number of times an actor has won the award is 3, which was Jack Nicholson, and he also had the highest number of nominations. We have heard of almost everyone on this list, indicating the reputation of Oscars.
 
 
@@ -236,7 +168,8 @@ all_actress_new %>%
     legend.position = "none"
   ) + scale_fill_manual(values = c("#33a02c", "#000000"))
 ```
-This is a barchart of actresses who have been nominated for Best Actress and/or Best Supporting Actress more than four times, and the number of actual wins were colored differently. There are more actresses than actors of such case. Just lie the previous graph, we can see that most of them won the award at least once, and there seems to be a positive correlation between the number of nominations and the number of wins. The highest number of times an actor has won the award is 4, which was Katherine Hepburn, and she does not have the highest number of nominations. The one with the highest number of nominations is Meryl Streep, and she has onw the award 3 times.
+
+This is a barchart of actresses who have been nominated for Best Actress and/or Best Supporting Actress more than four times, and the number of actual wins were colored differently. There are more actresses than actors of such case. Just lie the previous graph, we can see that most of them won the award at least once, and there seems to be a positive correlation between the number of nominations and the number of wins. The highest number of times an actor has won the award is 4, which was Katherine Hepburn, and she does not have the highest number of nominations. The one with the highest number of nominations is Meryl Streep, and she has won the award 3 times.
 
 
 
@@ -256,7 +189,7 @@ female_nom_bo %>% mutate(Status = ifelse(Status == "N", "Male-lead Nominee", "Fe
   ggtitle("Comparing the Boxoffice earnings of female-lead Oscar Best Picture winners\n with the other nominees of that year")
 ```
 
-In the history of Oscars from 1927 to 2021, there were only 16 years where movies with female lead role won the Best Picture. We compared the box office earnings of the wins and other nominees which are movies with male leads that year. The range of the earnings has been increasing over the years, and there were just a few years where the female-lead winners had the highest earnings among the nominated movies. The graph shows that Oscars winners with female leads are not necessarily more popular than the nominees.
+In the history of Oscars from 1927 to 2021, there were only 16 years where movies with female lead role won the Best Picture. We compared the box office earnings of the wins and other nominees which are movies with male leads that year. The range of the earnings has been increasing over the years, and there were just a few years where the female-lead winners had the highest earnings among the nominated movies. The graph shows that Oscars winners with female leads are not necessarily more popular than the nominees of the same years.
 
 ## Average Rating of Oscar Nominees over Time
 
@@ -299,12 +232,13 @@ imdb_oscar %>%
   xlab("Runtime (mins)") + ylab("Rating (out of 10)") +
   theme_oscars(base_size = 10, grid_width = 0.4)
 ```
+
 We can see that a large proportion of the Oscar movies have runtime of 100 to 150 minutes and ratings of 7 to 8.5. There are just a few movies with ratings over 9 and below 6.5, or runtime over 150 minutes. There is not necessarily a correlation between runtime and ratings.
+
 
 ## Best Lead Actors Race over Time
 
-
-The following is one graph showing the race of nominees(winners included) of Best Lead Actor over the years. We divided it into five graphs to accommodate all 100 years in the x-axis. We were able to find out that the number of people of color nominated for Oscars Best Actor and Best Supporting Actor has significantly increased over the years. The rate of the increase has accelerated towards recent years, and the diversity has also improved. 
+The following a one graph showing the race of nominees (winners included) of Best Lead Actor over the years. We divided it into five graphs to accommodate all 100 years on the x-axis. We were able to find out that the number of people of color nominated for Oscars Best Actor and Best Supporting Actor has significantly increased over the years. The rate of the increase has accelerated towards recent years, and the diversity has also improved. 
 
 ```{r}
 black_actor_lead <- black_actor_lead %>% mutate(Year = as.numeric(Year))

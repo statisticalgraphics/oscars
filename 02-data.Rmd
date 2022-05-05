@@ -9,13 +9,13 @@ https://en.wikipedia.org/wiki/Academy_Award_for_Best_Supporting_Actress
 
 
 2. We collected our data for the list of black/Latin/Asian Oscars winners and nominees over the years for best actor, best actress, best supporting actor, and best supporting actress by web scraping from Wikipedia.
-The variables of these data sets are Year, Name of Actor/Actress, Role, Film, Status(Won or Nominated), and Milestone.
+The variables of these data sets are Year, Name of Actor/Actress, Role, Film, Status (Won or Nominated), and Milestone.
 https://en.wikipedia.org/wiki/List_of_black_Academy_Award_winners_and_nominees
 https://en.wikipedia.org/wiki/List_of_Latin_American_Academy_Award_winners_and_nominees
 https://en.wikipedia.org/wiki/List_of_Asian_Academy_Award_winners_and_nominees
 
 
-3. We collected the list of Best Picture Oscar nominees and winners by year by web scraping from imdb. The variables are Year, Movie, Running time, Genre, and Rating.
+3. We collected the list of Best Picture Oscar nominees and winners by year by web scraping from imdb. The variables are Year, Movie, Running Time, Genre, and Rating.
 https://www.imdb.com/list/ls009487211/
 
 
@@ -30,4 +30,3 @@ https://www.ultimatemovierankings.com/
 
 
 
-##https://screenrant.com/highest-grossing-best-picture-winners-ranked/

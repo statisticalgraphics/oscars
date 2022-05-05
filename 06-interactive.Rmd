@@ -1,9 +1,82 @@
 # Interactive component
 
+```{r}
+library(shiny)
+library(shinydashboard)
+```
+
+
 ## IMDB Ratings of Oscar Movies over Time
 
 https://shrtan.shinyapps.io/C_Graphics/
-Click this link and try hovering over your mouse on the points. You will see the poster of the movie.
+Click this link and try hovering over your mouse on the points. You will see the poster of the respetive movie. We decided to use the include interactivity here because there are too many data points. This way for each one you can clearly see the IMDB rating for each movie without being too overwhelmed by all the information. Since, even the year is divided by decade the user can find exactly what they want. 
+
 The ratings of Oscar movies range mostly from 6.5 to 8.5, and there are just a few movies with ratings over 9 and below 6.5. We can see less movies with ratings under 7 for recent years compared to years before 1980.
+
+```{r message=FALSE, warning=FALSE}
+# Dashboard ----------------------------------------------------------------
+ui <- dashboardPage(
+  dashboardHeader(title = "Test"),
+  dashboardSidebar(),
+  dashboardBody(tags$head(tags$style(
+    HTML("img.small-img {
+          max-width: 75px;
+          }")
+  )),
+  plotlyOutput("hoverplot"))
+)
+
+server <- function(input, output, session) {
+  output$hoverplot <- renderPlotly({
+    plot_ly(
+      imdb_oscar,
+      x         = ~ Year,
+      y         = ~ Rating,
+      type      = 'scatter',
+      mode      = 'markers',
+      hoverinfo = 'none',
+      source = "hoverplotsource",
+      customdata = ~ Image
+    ) %>%
+      event_register('plotly_hover') %>%
+      event_register('plotly_unhover')
+  })
+
+  hover_event <- reactive({
+    event_data(event = "plotly_hover", source = "hoverplotsource")
+  })
+
+  unhover_event <- reactive({
+    event_data(event = "plotly_unhover", source = "hoverplotsource")
+  })
+
+  hoverplotlyProxy <- plotlyProxy("hoverplot", session)
+
+  observeEvent(unhover_event(), {
+    hoverplotlyProxy %>%
+      plotlyProxyInvoke("relayout", list(images = list(NULL)))
+  })
+
+  observeEvent(hover_event(), {
+    hoverplotlyProxy %>%
+      plotlyProxyInvoke("relayout", list(images = list(
+        list(
+          source = hover_event()$customdata,
+          xref = "x",
+          yref = "y",
+          x = hover_event()$x,
+          y = hover_event()$y,
+          sizex = 20,
+          sizey = 20,
+          opacity = 1
+        )
+      )))
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+#include_app(t, height = "400px")
+```
 
 

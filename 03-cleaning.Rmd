@@ -1,12 +1,11 @@
 # Data transformation
 
 
-  We wrote functions that extract nth table from html, and read the tables in from Wikipedia for the Oscars winners and nominees over the years (1927-2021) for best actor, best actress, best supporting actor, and best supporting actress, and stored them in data frames actor_lead, actress_lead, actor_sup, actress_sup respectively. There were separate tables for each year on Wikipedia, so we combined the rows to make it into one data frame for each category. We used the same method for the black/Latin/Asian lead/supporting actors and actresses, and stored them in data frames black_actor_lead, black_actor_sup, black_actress_lead, black_actress_sup, and so on with Latin and Asian as well. We found one Egyptian Best Actor winner and put it in a single-row data frame. 
-  For the box office data for the highest grossing movies from 1977-2021, we found separate data sets for the box office of each year(1977-2021), scraped the Movie and the Box office of the row with the highest domestic grossing, and made a variable Year. We cleaned the numbers for the box office earnings as well. The resulting data set is a 45x3 data frame. For box office earnings for Oscar Best Picture (1980-2021), we first read in the table, selected "Movie", "Domestic Box Office", "Release Date" columns, renamed them appropriately, modified "Release Date" to make a new column "Year, and cleaned the numbers such as removing dollar signs and commas for the box office earnings. The resulting data set is a 41x4 data frame. 
-  For the list of Oscar Best Picture winners with female lead, we copied and pasted the corresponding Year and Movie to an excel file with those as the columns and read it in a data frame. And for the box office data of Winners with female lead and the Nominees of those 16 years, we found 16 separate data set for the whole box office of those years, selected for each year the rows of the winner and the nominees, copied and pasted them to an excel file and read it into a data frame. 
-  For the IMDB data for Oscars Best Picture winners and nominations over the years (1939-2021), we scraped Movie, Year, Genre, Running time, Rating and the link for the image of the movie poster to make it into a data frame.
-  We have 18 data sets including actor_lead, actress_lead, actor_sup, actress_sup, black_actor_lead, black_actress_lead, latin_actor_lead, latin_actress_lead, asian_actor_lead, asian_actress_lead, egyptian_actor_lead, highest_grossing, oscar_bo, female_winners, female_nom_bo, actor_wins, actress_wins, and imdb_oscar.
+We wrote three functions to particularly scrape the Wikipedia tables. We obtained information about the Oscars winners and nominees over the years (1927-2021) for best actor, best actress, best supporting actor, and best supporting actress, and stored them in the data frames actor_lead, actress_lead, actor_sup, actress_sup respectively. 
 
+There were separate tables for each year on Wikipedia, so we combined the rows to make it into one data frame for each category. 
+
+We used the same method for the black/Latin/Asian lead/supporting actors and actresses, and stored them in data frames black_actor_lead, black_actor_sup, black_actress_lead, black_actress_sup, and so on with Latin and Asian as well. We found one Egyptian Best Actor winner and put it in a single-row data frame. 
 
 
 ```{r}
@@ -50,7 +49,7 @@ year_change <- function(year) {
 }
 ```
 
-## Black lead actors and actresses
+## Black Lead Actors and Actresses
 ```{r}
 #black lead/supporting actors and actresses
 black_actors_html = read_html("https://en.wikipedia.org/wiki/List_of_black_Academy_Award_winners_and_nominees")
@@ -64,7 +63,7 @@ head(black_actor_lead, 3)
 head(black_actress_lead, 3)
 ```
 
-## Latin lead actors and actresses
+## Latin Lead Actors and Actresses
 ```{r}
 #latin lead/supporting actors and actress
 latin_actors_html <- read_html("https://en.wikipedia.org/wiki/List_of_Latin_American_Academy_Award_winners_and_nominees")
@@ -78,7 +77,7 @@ head(latin_actor_lead, 3)
 head(latin_actress_lead, 3)
 ```
 
-## Asian lead actors and actresses
+## Asian Lead Actors and Actresses
 ```{r}
 #asian lead/supporting actors and actress
 asian_actors_html <- read_html("https://en.wikipedia.org/wiki/List_of_Asian_Academy_Award_winners_and_nominees")
@@ -92,13 +91,16 @@ head(asian_actress_lead,3)
 #egyptian
 egyptian_actor_lead <- data.frame(Year = "2018", Name = "Rami Malek", Film = "Bohemian Rhapsody", Status = "Won")
 ```
-## Egyptian lead actor
+
+
+## Egyptian Lead Actor
 
 ```{r}
 head(egyptian_actor_lead,3)
 ```
 
-## All supporting actors and actresses
+
+## All Supporting Actors and Actresses
 
 ```{r}
 #all supporting actors
@@ -132,7 +134,7 @@ head(actress_sup,3)
 ```
 
 
-## All lead actors and actresses
+## All Lead Actors and Actresses
 
 ```{r}
 #all lead actors
@@ -170,7 +172,9 @@ head(actress_lead,3)
 ```
 
 
-##  Highest Grossing Movies 1977 - 2021
+## Highest Grossing Movies (1977 - 2021)
+
+For the box office data for the highest grossing movies from 1977-2021, we found separate data sets for the box office of each year (1977-2021) and wrote for loops to scrape the Movie and the Box office earnings of the row with the highest domestic grossing value, and made a variable Year. We cleaned the numbers for the box office earnings as well. The resulting data set is a 45x3 data frame.
 
 ```{r}
 link1 <- "https://www.boxofficemojo.com/year/world/"
@@ -206,6 +210,9 @@ head(highest_grossing, 3)
 
 
 ## Box office earnings of Oscar Best Picture 1980 - 2021
+
+For box office earnings for Oscar Best Picture (1980-2021), we first read in the table, selected "Movie", "Domestic Box Office", "Release Date" columns, renamed them appropriately, modified "Release Date" to make a new column "Year, and cleaned the numbers such as removing dollar signs and commas for the box office earnings. The resulting data set is a 41x4 data frame. 
+
 ```{r}
 oscar_bo_html <- read_html("https://www.the-numbers.com/movies/comparisons/Best-Picture-Oscar-Winners")
 
@@ -220,7 +227,11 @@ oscar_bo$Oscar_Boxoffice <- as.numeric(gsub("\\$|,", "", oscar_bo$Oscar_Boxoffic
 head(oscar_bo,3)
 ```
 
-## Oscar Best Picture Winners with female lead
+
+## Oscar Best Picture Winners with Female Lead
+
+For the list of Oscar Best Picture winners with female lead, we added the corresponding Year and Movie to an excel file with those as the columns and read it in a data frame.
+
 ```{r}
 library(readxl)
 female_winners<- read_xlsx("data/women.xlsx")
@@ -228,7 +239,11 @@ female_winners<- read_xlsx("data/women.xlsx")
 head(female_winners,3)
 ```
 
+
 ## Box office of Winners with female lead and the Nominees that year 
+
+For the box office data of Winners with female lead and the Nominees of those 16 years, we found 16 separate data set for the whole box office of those years, selected for each year the rows of the winner and the nominees, and added them to an excel file and read it into a data frame. 
+
 ```{r}
 female_nom_bo<-read_xlsx("data/female_nominees_bo.xlsx")
 head(female_nom_bo,3)
@@ -236,6 +251,8 @@ head(female_nom_bo,3)
 
 
 ## IMDB Ratings of Oscar 
+
+For the IMDB data for Oscars Best Picture winners and nominations over the years (1939-2021), we scraped Movie, Year, Genre, Running time, Rating and the link for the image of the movie poster to make it into a data frame.
 
 ```{r}
 imdb_htmls <- c("https://www.imdb.com/list/ls009487211/", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=2", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=3", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=4", "https://www.imdb.com/list/ls009487211/?sort=list_order,asc&st_dt=&mode=detail&page=5")
@@ -276,3 +293,6 @@ head(actor_wins, 3)
 actress_wins <- read_xlsx("data/actresses_num_wins.xlsx", col_names = c("Name", "Wins"))
 head(actress_wins, 3)
 ```
+
+
+We have 18 data sets including actor_lead, actress_lead, actor_sup, actress_sup, black_actor_lead, black_actress_lead, latin_actor_lead, latin_actress_lead, asian_actor_lead, asian_actress_lead, egyptian_actor_lead, highest_grossing, oscar_bo, female_winners, female_nom_bo, actor_wins, actress_wins, and imdb_oscar.
