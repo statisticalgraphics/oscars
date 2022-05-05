@@ -9,7 +9,7 @@ site: bookdown::bookdown_site
 
 We hear a lot of coverstaion surrounding diversity and inclucivity all around the world. Now there is an increasing number of people belonging to minority groups in positions of prominence. Movies are such a central part of our world and is almost a represenattion of us as a socity throughtout history. Since both of us are movie lovers, we were decided to focus on analyzing trends of diversity in movies. Movies are so universally loved, so we believe that asking questions in this context is the best way to spark these important conversations. Since the Oscars is synonomous with movies, we decided to study a couple of aspects of the Oscars over the years. 
 
-Two pivotal questions were had were: 
+Two pivotal questions we had were: 
 1)	Is there a racial disparity among actors? 
 2)	Are movies that have female lead roles as popular as those that have male lead roles?
 

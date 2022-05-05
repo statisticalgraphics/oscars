@@ -271,7 +271,6 @@ t1 <- actor_lead %>% filter(TimePeriod == "1928-1950") %>%
   geom_point(size = 5) +
   theme_light() +
   scale_color_manual(values = c("#E69F00", "#000000")) + theme(axis.title.x = element_blank(), axis.title.y = element_blank(), legend.title = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),  axis.ticks.y=element_blank(), axis.text.y=element_blank(), axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=0.2)) +
-  coord_fixed(ratio=1.5) +
   geom_text_repel(aes(label = ifelse(Actor %in% c(black_actor_lead$Name, asian_actor_lead$Name, latin_actor_lead$Nominee, egyptian_actor_lead$Name), Actor, "")), size = 3, max.overlaps = Inf) +
   ggtitle("Actors: 1928-1950")
 
